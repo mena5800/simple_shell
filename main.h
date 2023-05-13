@@ -12,3 +12,6 @@ void execmd(char **argv);
 char *get_location(char *command);
 int get_env(char **envp);
 void divide_commands(char **words,int length);
+char *my_strcpy(char *, char *);
+char *my_strdup(const char *);
+int my_strlen(const char *);

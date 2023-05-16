@@ -1,34 +1,39 @@
 #include "main.h"
 
-void execmd(char **argv){
-    char *command = NULL;
-    char *actual_command = NULL;
-    pid_t pid;
+/**
+ * execmd - excute command
+ * @argv: command
+ * Return: always void
+ */
 
-    if (argv){
-        /* get the command */
-        command = argv[0];
-        actual_command = get_location(command);
-        pid = fork();
-        if (pid < 0)
-        {
-            perror("fork failed");
-        }
-        else if (pid == 0)
-        {
-            /* execute the command with execve */
-            if (execve(actual_command, argv, NULL) == -1){
-                perror("Error:");
-            };
-            exit(EXIT_SUCCESS);
+void execmd(char **argv)
+{
+	char *command = NULL;
+	char *actual_command = NULL;
+	pid_t pid;
 
-        }
-        else
-        {
-            wait(NULL);
-        }
-
-
-    }
-
+	if (argv)
+	{
+		/* get the command */
+		command = argv[0];
+		actual_command = get_location(command);
+		pid = fork();
+		if (pid < 0)
+		{
+			perror("fork failed");
+		}
+		else if (pid == 0)
+		{
+			/* execute the command with execve */
+			if (execve(actual_command, argv, NULL) == -1)
+			{
+				perror("Error:");
+			};
+			exit(EXIT_SUCCESS);
+		}
+		else
+		{
+			wait(NULL);
+		}
+	}
 }

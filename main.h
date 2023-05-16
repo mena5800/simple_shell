@@ -21,6 +21,7 @@
 	int my_strcat(char *str1, char *str2);
 	char *my_strtok(char *str, const char *delim);
 	void my_print(char *str);
+	int my_atoi(char *str);
 
 #endif /* MAIN_H */
 

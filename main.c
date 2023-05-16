@@ -79,7 +79,7 @@ int main(int ac, char **argv, char **envp)
 				exit(0);
 			else
 			{
-				exit_code = atoi(argv[1]);
+				exit_code = my_atoi(argv[1]);
 				exit(exit_code);
 			}
 		}

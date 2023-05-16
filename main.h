@@ -22,6 +22,8 @@
 	char *my_strtok(char *str, const char *delim);
 	void my_print(char *str);
 	int my_atoi(char *str);
+	int my_getline(char **word);
+
 
 #endif /* MAIN_H */
 

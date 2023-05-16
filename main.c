@@ -22,7 +22,7 @@ int main(int ac, char **argv, char **envp)
 	{
 		num_tokens = 0;
 		my_print(prompt);
-		nchars_read = getline(&lineptr, &n, stdin);
+		nchars_read = my_getline(&lineptr);
 		/* check if the getline function failed or reached EOF or user use CTRL + D */
 		if (nchars_read == -1)
 		{

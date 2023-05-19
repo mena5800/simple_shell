@@ -23,6 +23,7 @@
 	void my_print(char *str);
 	int my_atoi(char *str);
 	int my_getline(char **word);
+	char *clean_word(char *word);
 
 
 #endif /* MAIN_H */

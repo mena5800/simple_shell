@@ -75,20 +75,49 @@ char *my_strtok(char *s, const char *delim)
 {
 	static char *p;
 	char *start;
+	static char c;
+	static int flag = 0;
 
 	if (s != NULL)
 		p = s;
 	if (p == NULL)
 		return (NULL);
 	start = p;
+	if (flag)
+	{
+		if (c == '\n' || c == ' ')
+		{
+			flag = 0;
+		}
+		else if (*p == c)
+		{
+			char *word = malloc(3);
+			word[0] = c;
+			word[1] = c;
+			word[2] = '\0';
+			p++;
+			flag = 0;
+			return word;
+		}
+		else
+		{
+			char *word = malloc(2);
+			word[0] = c;
+			word[1] = '\0';
+			flag = 0;
+			return word;
+		}
+	}
+
 	while (*p != '\0')
 	{
 		const char *d = delim;
-
 		while (*d != '\0')
 		{
 			if (*p == *d)
 			{
+				flag = 1;
+				c = *p;
 				*p = '\0';
 				p++;
 				if (start != p)
@@ -101,7 +130,7 @@ char *my_strtok(char *s, const char *delim)
 					break;
 				}
 			}
-		d++;
+			d++;
 		}
 		p++;
 	}
@@ -111,6 +140,6 @@ char *my_strtok(char *s, const char *delim)
 	}
 	else
 	{
-	return (start);
+		return (start);
 	}
 }

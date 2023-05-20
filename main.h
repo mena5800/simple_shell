@@ -32,5 +32,7 @@ int my_getline(char **word);
 char *clean_word(char *word);
 char *int_string(int num);
 void print_error(info cmd, char *error_name);
+char **clean_command(char *command, int length, int *argc);
+
 
 #endif /* MAIN_H */

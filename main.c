@@ -2,23 +2,16 @@
 
 #define BUFFER_SIZE 1024
 
-
-
 int main(int ac, char **argv, char **envp)
 {
 	info cmd;
 	cmd.name = argv[0];
 	cmd.command = argv[1];
 	cmd.line_count = 0;
-
 	char *prompt = "$ ";
-	char *lineptr = NULL, *lineptr_copy = NULL;
+	char *lineptr = NULL;
 	size_t n = 0;
 	ssize_t nchars_read;
-	const char *delim = " |&;\n";
-	int num_tokens = 0;
-	char *token;
-	int i;
 	int real_arguments;
 	int exit_code;
 	int cd_return;
@@ -34,7 +27,6 @@ int main(int ac, char **argv, char **envp)
 		/* Create a loop for the shell's prompt */
 		while (1)
 		{
-			num_tokens = 0;
 			my_print(prompt);
 			nchars_read = my_getline(&lineptr);
 			cmd.line_count += 1;
@@ -44,48 +36,8 @@ int main(int ac, char **argv, char **envp)
 				my_print("Exiting shell....\n");
 				return (-1);
 			}
-
-			/* allocate space for a copy of the lineptr */
-			lineptr_copy = malloc(sizeof(char) * nchars_read);
-			if (lineptr_copy == NULL)
-			{
-				perror("tsh: memory allocation error");
-				return (-1);
-			}
-
-			/* lineptr = command      copy command lineptr_copy*/
-			/* copy lineptr to lineptr_copy */
-			my_strcpy(lineptr_copy, lineptr);
-
-			/********** split the string (lineptr) into an array of words ********/
-			/* calculate the total number of tokens */
-			token = my_strtok(lineptr, delim);
-
-			while (token != NULL)
-			{
-				num_tokens++;
-				token = my_strtok(NULL, delim);
-			}
-			num_tokens++;
-
-			/* Allocate space to hold the array of strings */
-			argv = malloc(sizeof(char *) * num_tokens);
-
-			/* Store each token in the argv array */
-			token = my_strtok(lineptr_copy, delim);
 			real_arguments = 0;
-			while (token != NULL)			
-			{
-				if (my_strlen(clean_word(token)) != 0)
-				{
-					argv[real_arguments] = malloc(sizeof(char) * my_strlen(token));
-					my_strcpy(argv[real_arguments], clean_word(token));
-					real_arguments++;
-				}
-				
-				token = my_strtok(NULL, delim);
-			}
-			argv[real_arguments] = NULL;
+			argv = clean_command(lineptr, nchars_read, &real_arguments);
 			cmd.command = argv[0];
 			/* execute the command */
 			if (my_strcmp(argv[0], "env") == 0 && real_arguments == 1)
@@ -94,7 +46,7 @@ int main(int ac, char **argv, char **envp)
 			}
 			else if (my_strcmp(argv[0], "exit") == 0)
 			{
-				if (num_tokens == 2)
+				if (real_arguments == 1)
 					exit(0);
 				else
 				{
@@ -126,7 +78,7 @@ int main(int ac, char **argv, char **envp)
 			}
 			else
 			{
-				divide_commands(argv, num_tokens - 1,cmd);
+				divide_commands(argv, real_arguments, cmd);
 			}
 		}
 	}
@@ -153,17 +105,37 @@ int main(int ac, char **argv, char **envp)
 		// If execve fails, print an error and exit
 		perror("execve");
 		return 1;
-
 	}
 
 	/* free up allocated memory */
-	free(lineptr_copy);
 	free(lineptr);
 	return (0);
 }
 
 
-// char **clean_command(char *command)
-// {
-	
-// }
+
+void handle_cd(char *cwd,int argc,char **argv,int *cd_return)
+{
+	int return_val;
+
+	if (argc == 1)
+	{
+		getcwd(cwd, sizeof(cwd));
+		return_val = chdir(getenv("HOME"));
+	}
+	else if (my_strcmp(argv[1], "-") == 0)
+	{
+		return_val = chdir(cwd);
+	}
+	else
+	{
+		getcwd(cwd, sizeof(cwd));
+		return_val = chdir(argv[1]);
+	}
+	cd_return = return_val;
+	if (return_val != 0)
+	{
+		perror("Error: ");
+	}
+
+}

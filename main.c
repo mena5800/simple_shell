@@ -19,6 +19,7 @@ int main(int ac, char **argv, char **envp)
 	int num_tokens = 0;
 	char *token;
 	int i;
+	int real_arguments;
 	int exit_code;
 	int cd_return;
 	char cwd[BUFFER_SIZE];
@@ -72,18 +73,22 @@ int main(int ac, char **argv, char **envp)
 
 			/* Store each token in the argv array */
 			token = my_strtok(lineptr_copy, delim);
-
-			for (i = 0; token != NULL; i++)
+			real_arguments = 0;
+			while (token != NULL)			
 			{
-				argv[i] = malloc(sizeof(char) * my_strlen(token));
-				my_strcpy(argv[i], token);
-
+				if (my_strlen(clean_word(token)) != 0)
+				{
+					argv[real_arguments] = malloc(sizeof(char) * my_strlen(token));
+					my_strcpy(argv[real_arguments], clean_word(token));
+					real_arguments++;
+				}
+				
 				token = my_strtok(NULL, delim);
 			}
-			argv[i] = NULL;
+			argv[real_arguments] = NULL;
 			cmd.command = argv[0];
 			/* execute the command */
-			if (my_strcmp(argv[0], "env") == 0 && num_tokens == 2)
+			if (my_strcmp(argv[0], "env") == 0 && real_arguments == 1)
 			{
 				get_env(envp);
 			}
@@ -99,7 +104,7 @@ int main(int ac, char **argv, char **envp)
 			}
 			else if (my_strcmp(argv[0], "cd") == 0)
 			{
-				if (num_tokens == 2)
+				if (real_arguments == 1)
 				{
 					getcwd(cwd, sizeof(cwd));
 					cd_return = chdir(getenv("HOME"));
@@ -156,3 +161,9 @@ int main(int ac, char **argv, char **envp)
 	free(lineptr);
 	return (0);
 }
+
+
+// char **clean_command(char *command)
+// {
+	
+// }

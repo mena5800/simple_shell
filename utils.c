@@ -93,6 +93,7 @@ char *int_string(int num)
 	int i;
 	int counter = 0;
 	int num_mod = num;
+
 	while (num % 10 || num != 0)
 	{
 		counter += 1;
@@ -100,11 +101,12 @@ char *int_string(int num)
 	}
 
 	char *word = malloc(counter + 1);
+
 	for (i = counter - 1; i >= 0; i--)
 	{
 		word[i] = num_mod % 10 + '0';
 		num_mod /= 10;
 	}
 	word[counter] = '\0';
-	return word;
+	return (word);
 }

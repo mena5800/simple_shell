@@ -33,6 +33,8 @@ char *clean_word(char *word);
 char *int_string(int num);
 void print_error(info cmd, char *error_name);
 char **clean_command(char *command, int length, int *argc);
+void handle_cd(int argc,char **argv,int *cd_return);
+
 
 
 #endif /* MAIN_H */

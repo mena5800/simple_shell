@@ -2,6 +2,7 @@
 
 #define BUFFER_SIZE 1024
 
+
 int main(int ac, char **argv, char **envp)
 {
 	info cmd;
@@ -56,25 +57,26 @@ int main(int ac, char **argv, char **envp)
 			}
 			else if (my_strcmp(argv[0], "cd") == 0)
 			{
-				if (real_arguments == 1)
-				{
-					getcwd(cwd, sizeof(cwd));
-					cd_return = chdir(getenv("HOME"));
-				}
-				else if (my_strcmp(argv[1], "-") == 0)
-				{
-					cd_return = chdir(cwd);
-				}
-				else
-				{
-					getcwd(cwd, sizeof(cwd));
-					cd_return = chdir(argv[1]);
-				}
+				// if (real_arguments == 1)
+				// {
+				// 	getcwd(cwd, sizeof(cwd));
+				// 	cd_return = chdir(getenv("HOME"));
+				// }
+				// else if (my_strcmp(argv[1], "-") == 0)
+				// {
+				// 	cd_return = chdir(cwd);
+				// }
+				// else
+				// {
+				// 	getcwd(cwd, sizeof(cwd));
+				// 	cd_return = chdir(argv[1]);
+				// }
 
-				if (cd_return != 0)
-				{
-					perror("Error: ");
-				}
+				// if (cd_return != 0)
+				// {
+				// 	perror("Error: ");
+				// }
+				handle_cd(real_arguments,argv,&cd_return);
 			}
 			else
 			{
@@ -114,28 +116,3 @@ int main(int ac, char **argv, char **envp)
 
 
 
-void handle_cd(char *cwd,int argc,char **argv,int *cd_return)
-{
-	int return_val;
-
-	if (argc == 1)
-	{
-		getcwd(cwd, sizeof(cwd));
-		return_val = chdir(getenv("HOME"));
-	}
-	else if (my_strcmp(argv[1], "-") == 0)
-	{
-		return_val = chdir(cwd);
-	}
-	else
-	{
-		getcwd(cwd, sizeof(cwd));
-		return_val = chdir(argv[1]);
-	}
-	cd_return = return_val;
-	if (return_val != 0)
-	{
-		perror("Error: ");
-	}
-
-}

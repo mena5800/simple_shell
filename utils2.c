@@ -74,3 +74,35 @@ char **clean_command(char *command, int length, int *argc)
 	*argc = num;
 	return argv;
 }
+
+void handle_cd(int argc,char **argv,int *cd_return)
+{
+
+
+	static char cwd[1024];
+	static char last_cwd[1024];
+
+	if (argc == 1)
+	{
+		getcwd(last_cwd, sizeof(last_cwd));
+		*cd_return = chdir(getenv("HOME"));
+		getcwd(cwd, sizeof(cwd));
+	}
+	else if (my_strcmp(argv[1], "-") == 0)
+	{
+		*cd_return = chdir(last_cwd);
+		my_strcpy(last_cwd,cwd);
+		getcwd(cwd, sizeof(cwd));
+	}
+	else
+	{
+		getcwd(last_cwd, sizeof(last_cwd));
+		*cd_return = chdir(argv[1]);
+		getcwd(cwd, sizeof(cwd));
+	}
+	if (*cd_return != 0)
+	{
+		perror("Error: ");
+	}
+
+}

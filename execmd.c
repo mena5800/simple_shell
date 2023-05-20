@@ -6,7 +6,7 @@
  * Return: always void
  */
 
-void execmd(char **argv)
+void execmd(char **argv,info cmd)
 {
 	char *command = NULL;
 	char *actual_command = NULL;
@@ -27,7 +27,8 @@ void execmd(char **argv)
 			/* execute the command with execve */
 			if (execve(actual_command, argv, NULL) == -1)
 			{
-				perror("Error:");
+				print_error(cmd,"not found");
+				// perror("");
 			};
 			exit(EXIT_SUCCESS);
 		}

@@ -7,7 +7,7 @@
  * Return: void
  */
 
-void divide_commands(char **words, int length)
+void divide_commands(char **words, int length, info cmd)
 {
 	char **mod_words;
 	int j = 0;
@@ -30,7 +30,7 @@ void divide_commands(char **words, int length)
 		}
 		if (my_strcmp(words[i], ";") == 0)
 		{
-			execmd(mod_words);
+			execmd(mod_words,cmd);
 			free(mod_words);
 			mod_words = malloc(sizeof(words));
 			j = 0;
@@ -44,7 +44,7 @@ void divide_commands(char **words, int length)
 		}
 	}
 	
-	execmd(mod_words);
+	execmd(mod_words,cmd);
 }
 
 

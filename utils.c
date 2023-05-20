@@ -43,7 +43,7 @@ int my_atoi(char *str)
  * my_getline - get the command as input from console
  * @word: where the command save
  * Return: the length of input
-*/
+ */
 
 int my_getline(char **word)
 {
@@ -63,4 +63,48 @@ int my_getline(char **word)
 	w = buffer;
 	*word = w;
 	return (num_bytes);
+}
+
+/**
+ * print_error - function to print not found command error
+ * @cmd: object to get error information
+ * @error_name: the name of error
+ * Return: void
+ */
+void print_error(info cmd, char *error_name)
+{
+	my_print(cmd.name);
+	my_print(": ");
+	my_print(int_string(cmd.line_count));
+	my_print(": ");
+	my_print(cmd.command);
+	my_print(": ");
+	my_print(error_name);
+	my_print("\n");
+}
+
+/**
+ * int_string - function to convert int to string
+ * @num: int number
+ * Return: string of int number
+ */
+char *int_string(int num)
+{
+	int i;
+	int counter = 0;
+	int num_mod = num;
+	while (num % 10 || num != 0)
+	{
+		counter += 1;
+		num /= 10;
+	}
+
+	char *word = malloc(counter + 1);
+	for (i = counter - 1; i >= 0; i--)
+	{
+		word[i] = num_mod % 10 + '0';
+		num_mod /= 10;
+	}
+	word[counter] = '\0';
+	return word;
 }

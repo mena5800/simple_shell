@@ -2,9 +2,16 @@
 
 #define BUFFER_SIZE 1024
 
+
+
 int main(int ac, char **argv, char **envp)
 {
-	char *prompt = "(Eshell) $ ";
+	info cmd;
+	cmd.name = argv[0];
+	cmd.command = argv[1];
+	cmd.line_count = 0;
+
+	char *prompt = "$ ";
 	char *lineptr = NULL, *lineptr_copy = NULL;
 	size_t n = 0;
 	ssize_t nchars_read;
@@ -29,6 +36,7 @@ int main(int ac, char **argv, char **envp)
 			num_tokens = 0;
 			my_print(prompt);
 			nchars_read = my_getline(&lineptr);
+			cmd.line_count += 1;
 			/* check if the getline function failed or reached EOF or user use CTRL + D */
 			if (nchars_read == -1)
 			{
@@ -73,7 +81,7 @@ int main(int ac, char **argv, char **envp)
 				token = my_strtok(NULL, delim);
 			}
 			argv[i] = NULL;
-
+			cmd.command = argv[0];
 			/* execute the command */
 			if (my_strcmp(argv[0], "env") == 0 && num_tokens == 2)
 			{
@@ -113,7 +121,7 @@ int main(int ac, char **argv, char **envp)
 			}
 			else
 			{
-				divide_commands(argv, num_tokens - 1);
+				divide_commands(argv, num_tokens - 1,cmd);
 			}
 		}
 	}
@@ -121,6 +129,7 @@ int main(int ac, char **argv, char **envp)
 	{
 		/* Running in non interactive mode\n */
 		nchars_read = read(STDIN_FILENO, cwd, BUFFER_SIZE - 1);
+		cmd.line_count += 1;
 		if (nchars_read <= 0)
 		{
 			perror("read");
@@ -131,10 +140,9 @@ int main(int ac, char **argv, char **envp)
 		{
 			cwd[nchars_read - 1] = '\0';
 		}
-		printf("%s\n", cwd);
 
 		// Execute the command using execve
-		char *args[] = {"/bin/sh", "-c", cwd, NULL};
+		char *args[] = {cmd.name, "-c", cwd, NULL};
 		execve("/bin/sh", args, NULL);
 
 		// If execve fails, print an error and exit

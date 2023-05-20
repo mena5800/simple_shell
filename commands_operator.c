@@ -43,15 +43,16 @@ void divide_commands(char **words, int length)
 			j++;
 		}
 	}
+	
 	execmd(mod_words);
 }
+
 
 /**
  * clean_word - remove spaces in word
  * @word: the word you need to remove space from it
  * Return: clean word
 */
-
 char *clean_word(char *word)
 {
 	int i;

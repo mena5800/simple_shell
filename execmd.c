@@ -17,8 +17,8 @@ void execmd(char **argv,info cmd)
 		/* get the command */
 		command = argv[0];
 		actual_command = get_location(command);
+
 		pid = fork();
-		// printf("%s\n",actual_command);
 		if (pid < 0)
 		{
 			perror("fork failed");
@@ -38,4 +38,5 @@ void execmd(char **argv,info cmd)
 			wait(NULL);
 		}
 	}
+	
 }

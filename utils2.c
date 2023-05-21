@@ -77,8 +77,6 @@ char **clean_command(char *command, int length, int *argc)
 
 void handle_cd(int argc,char **argv,int *cd_return)
 {
-
-
 	static char cwd[1024];
 	static char last_cwd[1024];
 
@@ -105,4 +103,33 @@ void handle_cd(int argc,char **argv,int *cd_return)
 		perror("Error: ");
 	}
 
+}
+
+void command_process(int real_arguments, char **argv, char **envp, info cmd)
+{
+	int exit_code;
+	int cd_return;
+	if (my_strcmp(argv[0], "env") == 0 && real_arguments == 1)
+	{
+		get_env(envp);
+	}
+	else if (my_strcmp(argv[0], "exit") == 0)
+	{
+		if (real_arguments == 1)
+			exit(0);
+		else
+		{
+			exit_code = my_atoi(argv[1]);
+			exit(exit_code);
+		}
+	}
+	else if (my_strcmp(argv[0], "cd") == 0)
+	{
+		handle_cd(real_arguments, argv, &cd_return);
+	}
+	else
+	{
+		divide_commands(argv, real_arguments, cmd);
+	}
+	free(argv);
 }

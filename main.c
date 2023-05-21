@@ -2,21 +2,17 @@
 
 #define BUFFER_SIZE 1024
 
+void command_process(int real_arguments, char **argv, char **envp, info cmd);
 
 int main(int ac, char **argv, char **envp)
 {
-	info cmd;
-	cmd.name = argv[0];
-	cmd.command = argv[1];
-	cmd.line_count = 0;
+	info cmd = {argv[0],argv[1],0};
 	char *prompt = "$ ";
 	char *lineptr = NULL;
 	size_t n = 0;
 	ssize_t nchars_read;
 	int real_arguments;
-	int exit_code;
-	int cd_return;
-	char cwd[BUFFER_SIZE];
+	char buffer[BUFFER_SIZE];
 
 	if (isatty(STDIN_FILENO))
 	{
@@ -40,72 +36,32 @@ int main(int ac, char **argv, char **envp)
 			real_arguments = 0;
 			argv = clean_command(lineptr, nchars_read, &real_arguments);
 			cmd.command = argv[0];
-			/* execute the command */
-			if (my_strcmp(argv[0], "env") == 0 && real_arguments == 1)
-			{
-				get_env(envp);
-			}
-			else if (my_strcmp(argv[0], "exit") == 0)
-			{
-				if (real_arguments == 1)
-					exit(0);
-				else
-				{
-					exit_code = my_atoi(argv[1]);
-					exit(exit_code);
-				}
-			}
-			else if (my_strcmp(argv[0], "cd") == 0)
-			{
-				// if (real_arguments == 1)
-				// {
-				// 	getcwd(cwd, sizeof(cwd));
-				// 	cd_return = chdir(getenv("HOME"));
-				// }
-				// else if (my_strcmp(argv[1], "-") == 0)
-				// {
-				// 	cd_return = chdir(cwd);
-				// }
-				// else
-				// {
-				// 	getcwd(cwd, sizeof(cwd));
-				// 	cd_return = chdir(argv[1]);
-				// }
+			command_process(real_arguments,argv,envp,cmd);
 
-				// if (cd_return != 0)
-				// {
-				// 	perror("Error: ");
-				// }
-				handle_cd(real_arguments,argv,&cd_return);
-			}
-			else
-			{
-				divide_commands(argv, real_arguments, cmd);
-			}
 		}
 	}
 	else
 	{
 		/* Running in non interactive mode\n */
-		nchars_read = read(STDIN_FILENO, cwd, BUFFER_SIZE - 1);
-		cmd.line_count += 1;
+		nchars_read = read(STDIN_FILENO, buffer, BUFFER_SIZE - 1);
 		if (nchars_read <= 0)
 		{
 			perror("read");
 			return 1;
 		}
-		cwd[nchars_read] = '\0';
-		if (nchars_read > 0 && cwd[nchars_read - 1] == '\n')
+		cmd.line_count += 1;
+
+		buffer[nchars_read] = '\0';
+
+		if (nchars_read > 0 && buffer[nchars_read - 1] == '\n')
 		{
-			cwd[nchars_read - 1] = '\0';
+			buffer[nchars_read - 1] = '\0';
 		}
 
-		// Execute the command using execve
-		char *args[] = {cmd.name, "-c", cwd, NULL};
-		execve("/bin/sh", args, NULL);
-
-		// If execve fails, print an error and exit
-		perror("execve");
+		real_arguments = 0;
+		argv = clean_command(buffer, nchars_read, &real_arguments);
+		cmd.command = argv[0];
+		command_process(real_arguments,argv,envp,cmd);
 		return 1;
 	}
 
@@ -113,6 +69,4 @@ int main(int ac, char **argv, char **envp)
 	free(lineptr);
 	return (0);
 }
-
-
 

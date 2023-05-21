@@ -11,8 +11,8 @@
 struct info
 {
 	char *name;
-	int line_count;
 	char *command;
+	int line_count;
 
 } typedef info;
 

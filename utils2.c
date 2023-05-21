@@ -131,5 +131,21 @@ void command_process(int real_arguments, char **argv, char **envp, info cmd)
 	{
 		divide_commands(argv, real_arguments, cmd);
 	}
-	free(argv);
+	// free(argv);
+}
+
+int get_num_lines(char *buffer)
+{
+	int counter = 1;
+	int i = 0;
+
+	while (buffer[i] != '\0')
+	{
+		if (buffer[i] == '\n')
+		{
+			counter++;
+		}
+		i++;
+	}
+	return counter;
 }

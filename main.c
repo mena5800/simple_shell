@@ -2,17 +2,16 @@
 
 #define BUFFER_SIZE 1024
 
-void command_process(int real_arguments, char **argv, char **envp, info cmd);
-
 int main(int ac, char **argv, char **envp)
 {
-	info cmd = {argv[0],argv[1],0};
+	info cmd = {argv[0], argv[1], 0};
 	char *prompt = "$ ";
 	char *lineptr = NULL;
 	size_t n = 0;
 	ssize_t nchars_read;
 	int real_arguments;
 	char buffer[BUFFER_SIZE];
+	int i;
 
 	if (isatty(STDIN_FILENO))
 	{
@@ -36,20 +35,19 @@ int main(int ac, char **argv, char **envp)
 			real_arguments = 0;
 			argv = clean_command(lineptr, nchars_read, &real_arguments);
 			cmd.command = argv[0];
-			command_process(real_arguments,argv,envp,cmd);
-
+			command_process(real_arguments, argv, envp, cmd);
+			free(argv);
 		}
 	}
 	else
 	{
-		/* Running in non interactive mode\n */
+		/* Running in non interactive mode */
 		nchars_read = read(STDIN_FILENO, buffer, BUFFER_SIZE - 1);
 		if (nchars_read <= 0)
 		{
 			perror("read");
 			return 1;
 		}
-		cmd.line_count += 1;
 
 		buffer[nchars_read] = '\0';
 
@@ -57,11 +55,19 @@ int main(int ac, char **argv, char **envp)
 		{
 			buffer[nchars_read - 1] = '\0';
 		}
-
 		real_arguments = 0;
+		int num_lines = get_num_lines(buffer);
 		argv = clean_command(buffer, nchars_read, &real_arguments);
-		cmd.command = argv[0];
-		command_process(real_arguments,argv,envp,cmd);
+
+		
+		for (i = 0; i < num_lines; i++)
+		{
+			/*need more handling*/
+			cmd.line_count += 1;
+			cmd.command = argv[i];
+			command_process(real_arguments, argv, envp, cmd);
+		}
+		free(argv);
 		return 1;
 	}
 
@@ -69,4 +75,3 @@ int main(int ac, char **argv, char **envp)
 	free(lineptr);
 	return (0);
 }
-

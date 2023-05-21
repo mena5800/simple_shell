@@ -34,6 +34,8 @@ char *int_string(int num);
 void print_error(info cmd, char *error_name);
 char **clean_command(char *command, int length, int *argc);
 void handle_cd(int argc,char **argv,int *cd_return);
+int get_num_lines(char *buffer);
+void command_process(int real_arguments, char **argv, char **envp, info cmd);
 
 
 

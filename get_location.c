@@ -1,5 +1,4 @@
 #include "main.h"
-#include "string.h"
 
 /**
  * get_location - get the location of exe file should excute
@@ -21,7 +20,7 @@ char *get_location(char *command)
 		/* Get length of the command that was passed */
 		command_length = my_strlen(command);
 		/* Let's break down the path variable and get all the directories available*/
-		path_token = strtok(path_copy, ":");
+		path_token = my_strtok(path_copy, ":");
 		while (path_token != NULL)
 		{
 			/* Get the length of the directory*/
@@ -45,7 +44,7 @@ char *get_location(char *command)
 			{
 				/* free up the file_path memory so we can check for another path*/
 				free(file_path);
-				path_token = strtok(NULL, ":");
+				path_token = my_strtok(NULL, ":");
 			}
 		}
 		/* if we don't get any file_path that exists for the command, we return NULL but we need to free up memory for path_copy */

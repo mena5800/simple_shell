@@ -45,19 +45,19 @@ char **clean_command(char *command, int length, int *argc)
 
 	/********** split the string (lineptr) into an array of words ********/
 	/* calculate the total number of tokens */
-	token = my_strtok(command, delim);
+	token = my_mod_strtok(command, delim);
 
 	while (token != NULL)
 	{
 		num_tokens++;
-		token = my_strtok(NULL, delim);
+		token = my_mod_strtok(NULL, delim);
 	}
 	num_tokens++;
 
 	/* Allocate space to hold the array of strings */
 	argv = malloc(sizeof(char *) * num_tokens);
 	/* Store each token in the argv array */
-	token = my_strtok(command_copy, delim);
+	token = my_mod_strtok(command_copy, delim);
 	num = 0;
 	while (token != NULL)
 	{
@@ -68,7 +68,7 @@ char **clean_command(char *command, int length, int *argc)
 			num++;
 		}
 
-		token = my_strtok(NULL, delim);
+		token = my_mod_strtok(NULL, delim);
 	}
 	argv[num] = NULL;
 	*argc = num;

@@ -6,11 +6,13 @@
  * Return: always void
  */
 
-void execmd(char **argv,info cmd)
+int execmd(char **argv, info cmd)
 {
 	char *command = NULL;
 	char *actual_command = NULL;
 	pid_t pid;
+	pid_t child_pid;
+	int status = -1;
 
 	if (argv)
 	{
@@ -28,15 +30,22 @@ void execmd(char **argv,info cmd)
 			/* execute the command with execve */
 			if (execve(actual_command, argv, NULL) == -1)
 			{
-				print_error(cmd,"not found");
+				print_error(cmd, "not found");
 				// perror("");
 			};
-			exit(EXIT_SUCCESS);
+			// exit(EXIT_SUCCESS);
 		}
 		else
 		{
-			wait(NULL);
+			child_pid = waitpid(pid, &status, 0);
+			if (child_pid == -1)
+			{
+				perror("waitpid");
+				return -1;
+			}
+			return status;
 		}
 	}
-	
+	return status;
+
 }

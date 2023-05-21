@@ -16,7 +16,6 @@ struct info
 
 } typedef info;
 
-void execmd(char **argv, info cmd);
 char *get_location(char *command);
 int get_env(char **envp);
 void divide_commands(char **words, int length, info cmd);
@@ -37,6 +36,8 @@ void handle_cd(int argc,char **argv,int *cd_return);
 int get_num_lines(char *buffer);
 void command_process(int real_arguments, char **argv, char **envp, info cmd);
 char *my_strtok(char *s, const char *delim);
+int execmd(char **argv, info cmd);
+
 
 
 

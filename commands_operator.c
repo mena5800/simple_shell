@@ -14,6 +14,7 @@ void divide_commands(char **words, int length, info cmd)
 	int i;
 	int m = 1;
 	int flag = 0;
+	int exe_flag = 1;
 
 	mod_words = malloc(sizeof(words) * length);
 	for (i = 0; i < length; i++)
@@ -38,6 +39,39 @@ void divide_commands(char **words, int length, info cmd)
 			j = 0;
 			continue;
 		}
+		else if (my_strcmp(words[i],"&&") == 0)
+		{
+			mod_words[i] = NULL;
+			if (execmd(mod_words,cmd) != 0)
+			{
+				return;
+			}
+			else
+			{
+			free(mod_words);
+			mod_words = malloc(sizeof(words));
+			flag = 1;
+			j = 0;
+			continue;
+			}
+
+		}
+		else if (my_strcmp(words[i],"||") == 0)
+		{
+			mod_words[i] = NULL;
+			if (execmd(mod_words,cmd) != 0)
+			{
+				free(mod_words);
+				mod_words = malloc(sizeof(words));
+				flag = 1;
+				j = 0;
+				continue;
+			}
+			else
+			{
+				return;
+			}
+		}
 		else
 		{
 			mod_words[j] = malloc(my_strlen(words[i]));
@@ -49,7 +83,6 @@ void divide_commands(char **words, int length, info cmd)
 		mod_words[j] = NULL;
 	else
 		mod_words[i] = NULL;
-	
 	
 	execmd(mod_words,cmd);
 }

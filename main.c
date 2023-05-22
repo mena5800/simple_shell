@@ -4,15 +4,18 @@
 
 int main(int ac, char **argv, char **envp)
 {
-	info cmd = {argv[0], argv[1], 0};
+	info cmd;
 	char *prompt = "$ ";
 	char *lineptr = NULL;
-	size_t n = 0;
 	ssize_t nchars_read;
 	int real_arguments;
 	char buffer[BUFFER_SIZE];
 	int i;
+	int num_lines;
 
+	cmd.name = argv[0];
+	cmd.command = argv[1];
+	cmd.line_count = 0;
 	if (isatty(STDIN_FILENO))
 	{
 		/*Running in interactive mode\n");*/
@@ -46,7 +49,7 @@ int main(int ac, char **argv, char **envp)
 		if (nchars_read <= 0)
 		{
 			perror("read");
-			return 1;
+			return (1);
 		}
 
 		buffer[nchars_read] = '\0';
@@ -56,10 +59,9 @@ int main(int ac, char **argv, char **envp)
 			buffer[nchars_read - 1] = '\0';
 		}
 		real_arguments = 0;
-		int num_lines = get_num_lines(buffer);
+		num_lines = get_num_lines(buffer);
 		argv = clean_command(buffer, nchars_read, &real_arguments);
 
-		
 		for (i = 0; i < num_lines; i++)
 		{
 			/*need more handling*/
@@ -68,7 +70,7 @@ int main(int ac, char **argv, char **envp)
 			command_process(real_arguments, argv, envp, cmd);
 		}
 		free(argv);
-		return 1;
+		return (1);
 	}
 
 	/* free up allocated memory */

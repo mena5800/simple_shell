@@ -31,9 +31,7 @@ int execmd(char **argv, info cmd)
 			if (execve(actual_command, argv, NULL) == -1)
 			{
 				print_error(cmd, "not found");
-				// perror("");
 			};
-			// exit(EXIT_SUCCESS);
 		}
 		else
 		{
@@ -41,11 +39,11 @@ int execmd(char **argv, info cmd)
 			if (child_pid == -1)
 			{
 				perror("waitpid");
-				return -1;
+				return (-1);
 			}
-			return status;
+			return (status);
 		}
 	}
-	return status;
+	return (status);
 
 }

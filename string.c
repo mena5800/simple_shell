@@ -9,13 +9,14 @@
 int my_strlen(const char *s)
 {
 	int len = 0;
+	int i;
 
 	if (s == NULL)
 	{
 		return (len);
 	}
 
-	for (int i = 0; s[i] != '\0'; i++)
+	for (i = 0; s[i] != '\0'; i++)
 	{
 		len++;
 	}
@@ -51,16 +52,20 @@ char *my_strcpy(char *dest, char *src)
  */
 char *my_strdup(const char *str)
 {
+	size_t len;
+	char *dup;
+	size_t i;
+
 	if (str == NULL)
 		return (NULL);
 
-	size_t len = my_strlen(str);
-	char *dup = malloc(len + 1);
+	len = my_strlen(str);
+	dup = malloc(len + 1);
 
 	if (dup == NULL)
 		return (NULL);
 
-	for (size_t i = 0; i <= len; i++)
+	for (i = 0; i <= len; i++)
 		dup[i] = str[i];
 
 	return (dup);

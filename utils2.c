@@ -4,7 +4,7 @@
  * clean_word - remove spaces in word
  * @word: the word you need to remove space from it
  * Return: clean word
-*/
+ */
 char *clean_word(char *word)
 {
 	int i;
@@ -23,6 +23,12 @@ char *clean_word(char *word)
 	return (new_word);
 }
 
+/**
+ * clean_command - clean the command
+ * @command: string
+ * @length: length of string
+ * @argc: num of arguments
+ */
 char **clean_command(char *command, int length, int *argc)
 {
 	int num_tokens = 0;
@@ -36,27 +42,19 @@ char **clean_command(char *command, int length, int *argc)
 	if (command_copy == NULL)
 	{
 		perror("tsh: memory allocation error");
-		// return (-1);
 		exit(0);
 	}
-	/* lineptr = command      copy command lineptr_copy*/
 	/* copy lineptr to lineptr_copy */
 	my_strcpy(command_copy, command);
-
-	/********** split the string (lineptr) into an array of words ********/
 	/* calculate the total number of tokens */
 	token = my_mod_strtok(command, delim);
-
 	while (token != NULL)
 	{
 		num_tokens++;
 		token = my_mod_strtok(NULL, delim);
 	}
 	num_tokens++;
-
-	/* Allocate space to hold the array of strings */
 	argv = malloc(sizeof(char *) * num_tokens);
-	/* Store each token in the argv array */
 	token = my_mod_strtok(command_copy, delim);
 	num = 0;
 	while (token != NULL)
@@ -72,10 +70,17 @@ char **clean_command(char *command, int length, int *argc)
 	}
 	argv[num] = NULL;
 	*argc = num;
-	return argv;
+	return (argv);
 }
 
-void handle_cd(int argc,char **argv,int *cd_return)
+/**
+ * handle_cd - function to handle the cd
+ * @argc: length of arguments
+ * @argv: array of string
+ * @cd_retrun: the return value of chdir
+ * Return: void
+ */
+void handle_cd(int argc, char **argv, int *cd_return)
 {
 	static char cwd[1024];
 	static char last_cwd[1024];
@@ -89,7 +94,7 @@ void handle_cd(int argc,char **argv,int *cd_return)
 	else if (my_strcmp(argv[1], "-") == 0)
 	{
 		*cd_return = chdir(last_cwd);
-		my_strcpy(last_cwd,cwd);
+		my_strcpy(last_cwd, cwd);
 		getcwd(cwd, sizeof(cwd));
 	}
 	else
@@ -102,13 +107,21 @@ void handle_cd(int argc,char **argv,int *cd_return)
 	{
 		perror("Error: ");
 	}
-
 }
 
+/**
+ * command_process - choose which command should do
+ * @real_arguments: the num of arguments after clean
+ * @argv: array of string contain command
+ * @envp: contian env variables
+ * @cmd: struct object contain some information about shell
+ * Return: void
+ */
 void command_process(int real_arguments, char **argv, char **envp, info cmd)
 {
 	int exit_code;
 	int cd_return;
+
 	if (my_strcmp(argv[0], "env") == 0 && real_arguments == 1)
 	{
 		get_env(envp);
@@ -131,9 +144,13 @@ void command_process(int real_arguments, char **argv, char **envp, info cmd)
 	{
 		divide_commands(argv, real_arguments, cmd);
 	}
-	// free(argv);
 }
 
+/**
+ * get_num_lines - get the number of lines
+ * @buffer: string
+ * Return: number of lines in string
+ */
 int get_num_lines(char *buffer)
 {
 	int counter = 1;
@@ -147,5 +164,5 @@ int get_num_lines(char *buffer)
 		}
 		i++;
 	}
-	return counter;
+	return (counter);
 }

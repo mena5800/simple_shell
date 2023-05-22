@@ -8,13 +8,21 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
-struct info
+/**
+ * struct info - A struct to represent the cmd
+ *
+ * @name: name of shell
+ * @command: the name of command
+ * @line_cound: line counter
+ */
+
+typedef struct info
 {
 	char *name;
 	char *command;
 	int line_count;
 
-} typedef info;
+} info;
 
 char *get_location(char *command);
 int get_env(char **envp);
@@ -32,13 +40,10 @@ char *clean_word(char *word);
 char *int_string(int num);
 void print_error(info cmd, char *error_name);
 char **clean_command(char *command, int length, int *argc);
-void handle_cd(int argc,char **argv,int *cd_return);
+void handle_cd(int argc, char **argv, int *cd_return);
 int get_num_lines(char *buffer);
 void command_process(int real_arguments, char **argv, char **envp, info cmd);
 char *my_strtok(char *s, const char *delim);
 int execmd(char **argv, info cmd);
-
-
-
 
 #endif /* MAIN_H */

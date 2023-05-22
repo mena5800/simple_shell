@@ -30,8 +30,9 @@ int my_atoi(char *str)
 	int length = my_strlen(str);
 	int mul = 1;
 	int result = 0;
+	int i;
 
-	for (int i = length - 1; i >= 0; i--)
+	for (i = length - 1; i >= 0; i--)
 	{
 		result += mul * (str[i] - '0');
 		mul *= 10;
@@ -93,6 +94,7 @@ char *int_string(int num)
 	int i;
 	int counter = 0;
 	int num_mod = num;
+	char *word;
 
 	while (num % 10 || num != 0)
 	{
@@ -100,7 +102,7 @@ char *int_string(int num)
 		num /= 10;
 	}
 
-	char *word = malloc(counter + 1);
+	word = malloc(counter + 1);
 
 	for (i = counter - 1; i >= 0; i--)
 	{

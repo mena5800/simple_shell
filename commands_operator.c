@@ -1,5 +1,7 @@
 #include "main.h"
 
+void handle_semi_colon(int i, int *j, int *flag, info cmd, char **mod_words);
+int handle_and(int i, int *j, int *flag, char **mod_words, info cmd);
 /**
  * divide_commands - divide string into commands
  * @words: string
@@ -29,29 +31,16 @@ void divide_commands(char **words, int length, info cmd)
 		}
 		if (my_strcmp(words[i], ";") == 0)
 		{
-			mod_words[i] = NULL;
-			execmd(mod_words, cmd);
-			free(mod_words);
+			handle_semi_colon(i, &j, &flag, cmd, mod_words);
 			mod_words = malloc(sizeof(words));
-			flag = 1;
-			j = 0;
 			continue;
 		}
 		else if (my_strcmp(words[i], "&&") == 0)
 		{
-			mod_words[i] = NULL;
-			if (execmd(mod_words, cmd) != 0)
-			{
+			if (handle_and(i, &j, &flag, mod_words, cmd))
 				return;
-			}
-			else
-			{
-				free(mod_words);
-				mod_words = malloc(sizeof(words));
-				flag = 1;
-				j = 0;
-				continue;
-			}
+			mod_words = malloc(sizeof(words));
+			continue;
 		}
 		else if (my_strcmp(words[i], "||") == 0)
 		{
@@ -83,3 +72,4 @@ void divide_commands(char **words, int length, info cmd)
 
 	execmd(mod_words, cmd);
 }
+

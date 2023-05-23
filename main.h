@@ -45,5 +45,7 @@ int get_num_lines(char *buffer);
 void command_process(int real_arguments, char **argv, char **envp, info cmd);
 char *my_strtok(char *s, const char *delim);
 int execmd(char **argv, info cmd);
+void handle_semi_colon(int i, int *j, int *flag, info cmd, char **mod_words);
+int handle_and(int i, int *j, int *flag, char **mod_words, info cmd);
 
 #endif /* MAIN_H */

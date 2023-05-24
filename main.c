@@ -1,5 +1,12 @@
 #include "main.h"
 
+/**
+ * main - the main function
+ * @ac: the number of arguments
+ * @argv: the arguments
+ * @envp: the environmetal variables
+ * Return: 0 or -1
+ */
 int main(int ac, char **argv, char **envp)
 {
 	info cmd;

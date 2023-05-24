@@ -20,3 +20,4 @@ int get_env(char **envp)
 	}
 	return (0);
 }
+

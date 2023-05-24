@@ -8,6 +8,8 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
+#define BUFFER_SIZE 1024
+
 /**
  * struct info - A struct to represent the cmd
  *
@@ -21,9 +23,11 @@ typedef struct info
 	char *name;
 	char *command;
 	int line_count;
+	char **envp;
 
 } info;
 
+int interactive_mode(info cmd, char **argv, char **envp);
 char *get_location(char *command);
 int get_env(char **envp);
 void divide_commands(char **words, int length, info cmd);

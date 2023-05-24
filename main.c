@@ -1,7 +1,5 @@
 #include "main.h"
 
-#define BUFFER_SIZE 1024
-
 int main(int ac, char **argv, char **envp)
 {
 	info cmd;
@@ -16,10 +14,10 @@ int main(int ac, char **argv, char **envp)
 	cmd.name = argv[0];
 	cmd.command = argv[1];
 	cmd.line_count = 0;
+	cmd.envp = envp;
 	if (isatty(STDIN_FILENO))
 	{
 		/*Running in interactive mode\n");*/
-
 		/* declaring void variables */
 		(void)ac;
 
@@ -27,19 +25,10 @@ int main(int ac, char **argv, char **envp)
 		while (1)
 		{
 			my_print(prompt);
-			nchars_read = my_getline(&lineptr);
-			cmd.line_count += 1;
-			/* check if the getline function failed or reached EOF or user use CTRL + D */
-			if (nchars_read == -1)
+			if (interactive_mode(cmd, argv, envp) == -1)
 			{
-				my_print("Exiting shell....\n");
 				return (-1);
 			}
-			real_arguments = 0;
-			argv = clean_command(lineptr, nchars_read, &real_arguments);
-			cmd.command = argv[0];
-			command_process(real_arguments, argv, envp, cmd);
-			free(argv);
 		}
 	}
 	else
@@ -70,7 +59,7 @@ int main(int ac, char **argv, char **envp)
 			command_process(real_arguments, argv, envp, cmd);
 		}
 		free(argv);
-		return (1);
+		return (0);
 	}
 
 	/* free up allocated memory */

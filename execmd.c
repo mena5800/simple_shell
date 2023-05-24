@@ -28,7 +28,7 @@ int execmd(char **argv, info cmd)
 		else if (pid == 0)
 		{
 			/* execute the command with execve */
-			if (execve(actual_command, argv, NULL) == -1)
+			if (execve(actual_command, argv, cmd.envp) == -1)
 			{
 				print_error(cmd, "not found");
 			};

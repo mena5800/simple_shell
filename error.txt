@@ -1,52 +1,119 @@
-(command)[echo "/bin/ls" | ./hsh]
+(command)[echo "ls
+     ls
+ls
+ ls     " | ./hsh]
 
 [GOT]:
-(stdout)[AUTHORS
-README.md
-bin_ls.bash
-bin_ls_3_times.bash
-checker.bash
-commands_operator.c
-echo_1_arg.bash
-env.c
-error.txt
-execmd.c
-get_location.c
-handling.c
-hsh
-main.c
-main.h
-modes.c
-string.c
-stringsplus.c
-utils.c
-utils2.c
-](Length: 216)
-(stderr)[](Length: 0)
+(stdout)[](Length: 0)
+(stderr)[ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+ls: cannot access 'ls': No such file or directory
+](Length: 600)
 (status)[0]
 
 [EXPECTED]:
 (stdout)[AUTHORS
-bin_ls_3_times.bash
-bin_ls.bash
+bin_ls_1_arg_1.bash
+bin_ls_empty_path.bash
 checker.bash
 commands_operator.c
-echo_1_arg.bash
 env.c
 error.txt
 execmd.c
 get_location.c
 handling.c
 hsh
+ls_1_arg.bash
+ls_.bash
+ls_spaces.bash
 main.c
 main.h
 modes.c
 README.md
 string.c
 stringsplus.c
+test
 utils2.c
 utils.c
-](Length: 216)
+AUTHORS
+bin_ls_1_arg_1.bash
+bin_ls_empty_path.bash
+checker.bash
+commands_operator.c
+env.c
+error.txt
+execmd.c
+get_location.c
+handling.c
+hsh
+ls_1_arg.bash
+ls_.bash
+ls_spaces.bash
+main.c
+main.h
+modes.c
+README.md
+string.c
+stringsplus.c
+test
+utils2.c
+utils.c
+AUTHORS
+bin_ls_1_arg_1.bash
+bin_ls_empty_path.bash
+checker.bash
+commands_operator.c
+env.c
+error.txt
+execmd.c
+get_location.c
+handling.c
+hsh
+ls_1_arg.bash
+ls_.bash
+ls_spaces.bash
+main.c
+main.h
+modes.c
+README.md
+string.c
+stringsplus.c
+test
+utils2.c
+utils.c
+AUTHORS
+bin_ls_1_arg_1.bash
+bin_ls_empty_path.bash
+checker.bash
+commands_operator.c
+env.c
+error.txt
+execmd.c
+get_location.c
+handling.c
+hsh
+ls_1_arg.bash
+ls_.bash
+ls_spaces.bash
+main.c
+main.h
+modes.c
+README.md
+string.c
+stringsplus.c
+test
+utils2.c
+utils.c
+](Length: 1016)
 (stderr)[](Length: 0)
 (status)[0]
 
@@ -83,7 +150,7 @@ LC_PAPER=ar_EG.UTF-8
 XDG_CURRENT_DESKTOP=ubuntu:GNOME
 VTE_VERSION=6800
 WAYLAND_DISPLAY=wayland-0
-GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/a066dbff_fe95_42de_966a_426e728ca066
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/c9ac66aa_6428_469f_b870_0ab7f1376f6b
 GNOME_SETUP_DISPLAY=:1
 LESSCLOSE=/usr/bin/lesspipe %s %s
 XDG_SESSION_CLASS=user
@@ -91,7 +158,7 @@ LC_IDENTIFICATION=ar_EG.UTF-8
 TERM=xterm-256color
 LESSOPEN=| /usr/bin/lesspipe %s
 USER=mina
-GNOME_TERMINAL_SERVICE=:1.529
+GNOME_TERMINAL_SERVICE=:1.1556
 DISPLAY=:0
 SHLVL=2
 LC_TELEPHONE=ar_EG.UTF-8

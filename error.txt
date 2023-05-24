@@ -1,175 +1,19 @@
-(command)[echo "ls
-     ls
-ls
- ls     " | ./hsh]
+(command)[echo "env" | ./hsh]
 
 [GOT]:
-(stdout)[](Length: 0)
-(stderr)[ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-ls: cannot access 'ls': No such file or directory
-](Length: 600)
+(stdout)[HBTN=Holberton
+SHLVL=0
+](Length: 23)
+(stderr)[](Length: 0)
 (status)[0]
 
 [EXPECTED]:
-(stdout)[AUTHORS
-bin_ls_1_arg_1.bash
-bin_ls_empty_path.bash
-checker.bash
-commands_operator.c
-env.c
-error.txt
-execmd.c
-get_location.c
-handling.c
-hsh
-ls_1_arg.bash
-ls_.bash
-ls_spaces.bash
-main.c
-main.h
-modes.c
-README.md
-string.c
-stringsplus.c
-test
-utils2.c
-utils.c
-AUTHORS
-bin_ls_1_arg_1.bash
-bin_ls_empty_path.bash
-checker.bash
-commands_operator.c
-env.c
-error.txt
-execmd.c
-get_location.c
-handling.c
-hsh
-ls_1_arg.bash
-ls_.bash
-ls_spaces.bash
-main.c
-main.h
-modes.c
-README.md
-string.c
-stringsplus.c
-test
-utils2.c
-utils.c
-AUTHORS
-bin_ls_1_arg_1.bash
-bin_ls_empty_path.bash
-checker.bash
-commands_operator.c
-env.c
-error.txt
-execmd.c
-get_location.c
-handling.c
-hsh
-ls_1_arg.bash
-ls_.bash
-ls_spaces.bash
-main.c
-main.h
-modes.c
-README.md
-string.c
-stringsplus.c
-test
-utils2.c
-utils.c
-AUTHORS
-bin_ls_1_arg_1.bash
-bin_ls_empty_path.bash
-checker.bash
-commands_operator.c
-env.c
-error.txt
-execmd.c
-get_location.c
-handling.c
-hsh
-ls_1_arg.bash
-ls_.bash
-ls_spaces.bash
-main.c
-main.h
-modes.c
-README.md
-string.c
-stringsplus.c
-test
-utils2.c
-utils.c
-](Length: 1016)
+(stdout)[SHLVL=0
+HBTN=Holberton
+](Length: 23)
 (stderr)[](Length: 0)
 (status)[0]
 
 Environment:
-SHELL=/bin/bash
-SESSION_MANAGER=local/mina-virtual-machine:@/tmp/.ICE-unix/1867,unix/mina-virtual-machine:/tmp/.ICE-unix/1867
-QT_ACCESSIBILITY=1
-COLORTERM=truecolor
-XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
-SSH_AGENT_LAUNCHER=gnome-keyring
-XDG_MENU_PREFIX=gnome-
-GNOME_DESKTOP_SESSION_ID=this-is-deprecated
-LANGUAGE=en_US:
-LC_ADDRESS=ar_EG.UTF-8
-GNOME_SHELL_SESSION_MODE=ubuntu
-LC_NAME=ar_EG.UTF-8
-SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
-XMODIFIERS=@im=ibus
-DESKTOP_SESSION=ubuntu
-LC_MONETARY=ar_EG.UTF-8
-GTK_MODULES=gail:atk-bridge
-DBUS_STARTER_BUS_TYPE=session
-PWD=/home/mina/Desktop/simple_shell/final_project/eshell/new_edition/simple_shell
-XDG_SESSION_DESKTOP=ubuntu
-LOGNAME=mina
-XDG_SESSION_TYPE=wayland
-SYSTEMD_EXEC_PID=1867
-XAUTHORITY=/run/user/1000/.mutter-Xwaylandauth.FKAI51
-HOME=/home/mina
-USERNAME=mina
-IM_CONFIG_PHASE=1
-LANG=en_US.UTF-8
-LC_PAPER=ar_EG.UTF-8
-XDG_CURRENT_DESKTOP=ubuntu:GNOME
-VTE_VERSION=6800
-WAYLAND_DISPLAY=wayland-0
-GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/c9ac66aa_6428_469f_b870_0ab7f1376f6b
-GNOME_SETUP_DISPLAY=:1
-LESSCLOSE=/usr/bin/lesspipe %s %s
-XDG_SESSION_CLASS=user
-LC_IDENTIFICATION=ar_EG.UTF-8
-TERM=xterm-256color
-LESSOPEN=| /usr/bin/lesspipe %s
-USER=mina
-GNOME_TERMINAL_SERVICE=:1.1556
-DISPLAY=:0
-SHLVL=2
-LC_TELEPHONE=ar_EG.UTF-8
-QT_IM_MODULE=ibus
-LC_MEASUREMENT=ar_EG.UTF-8
-DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=b384909ae37caaf885d3fa4b646b425c
-XDG_RUNTIME_DIR=/run/user/1000
-LC_TIME=ar_EG.UTF-8
-XDG_DATA_DIRS=/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
-GDMSESSION=ubuntu
-DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus,guid=b384909ae37caaf885d3fa4b646b425c
-LC_NUMERIC=ar_EG.UTF-8
+HBTN=Holberton
 _=/usr/bin/env

@@ -19,7 +19,8 @@ int execmd(char **argv, info cmd)
 		/* get the command */
 		command = argv[0];
 		actual_command = get_location(command);
-
+		if (actual_command != NULL)
+		{
 		pid = fork();
 		if (pid < 0)
 		{
@@ -43,6 +44,12 @@ int execmd(char **argv, info cmd)
 			}
 			return (status);
 		}
+		}
+		else
+		{
+			print_error(cmd, "not found");
+		}
+		
 	}
 	return (status);
 

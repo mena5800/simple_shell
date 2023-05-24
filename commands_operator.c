@@ -39,7 +39,7 @@ void divide_commands(char **words, int length, info cmd)
 			if (handle_and(i, &j, &flag, mod_words, cmd))
 				return;
 			mod_words = malloc(sizeof(words));
-			continue;
+				continue;
 		}
 		else if (my_strcmp(words[i], "||") == 0)
 		{

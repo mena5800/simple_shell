@@ -1,45 +1,174 @@
 #include "main.h"
 
-/**
- * main - the main function
- * @ac: the number of arguments
- * @argv: the arguments
- * @envp: the environmetal variables
- * Return: 0 or -1
- */
+info cmd;
+
 int main(int ac, char **argv, char **envp)
 {
-	info cmd;
-	char *prompt = "$ ";
-	char *lineptr = NULL;
+    int real_arguments;
+    char *prompt = "$ ";
+    cmd.name = argv[0];
+    cmd.command = argv[1];
+    cmd.line_count = 0;
+    cmd.envp = envp;
+    char *args[1024];
+    pid_t pid;
+    int status;
+    char *path;
 
-	cmd.name = argv[0];
-	cmd.command = argv[1];
-	cmd.line_count = 0;
-	cmd.envp = envp;
-	if (isatty(STDIN_FILENO))
-	{
-		/*Running in interactive mode\n");*/
-		/* declaring void variables */
-		(void)ac;
+    ssize_t num_chars;
+    char *lineptr = NULL;
+    if (isatty(STDIN_FILENO))
+    {
+        /*runing in interactive mode*/
+        while (1)
+        {
+            lineptr = malloc(1024);
+            my_print(prompt);
+            num_chars = my_getline(lineptr);
+            // command excute
+            cmd.line_count += 1;
+            real_arguments = 0;
 
-		/* Create a loop for the shell's prompt */
-		while (1)
-		{
-			my_print(prompt);
-			if (interactive_mode(cmd, argv, envp) == -1)
-			{
-				return (-1);
-			}
-		}
-	}
-	else
-	{
-		/* Running in non interactive mode */
-		interactive_mode(cmd, argv, envp);
-		free(lineptr);
-		return (0);
-	}
+            char *newline = strchr(lineptr, '\n');
+            if (newline != NULL)
+            {
+                *newline = '\0';
+            }
+            // Parse command into arguments
+            char *token = strtok(lineptr, " ");
+            int num_args = 0;
 
-	/* free up allocated memory */
+            while (token != NULL)
+            {
+                // Ignore comments
+                if (token[0] == '#')
+                {
+                    token = NULL;
+                    break;
+                }
+
+                // Store argument and update counter
+                args[num_args++] = token;
+
+                // Get next token
+                token = strtok(NULL, " ");
+            }
+            args[num_args] = NULL;
+
+            // Execute command
+            if (num_args > 0)
+            {
+                // Get path to executable file
+                path = get_location(args[0]);
+                if (path == NULL)
+                {
+                    printf("%s: command not found\n", args[0]);
+                }
+                else
+                {
+                    pid = fork();
+
+                    if (pid == -1)
+                    {
+                        perror("fork");
+                        exit(EXIT_FAILURE);
+                    }
+                    else if (pid == 0)
+                    {
+                        // Child process
+                        int ret = execve(path, args, envp);
+                        if (ret == -1)
+                        {
+                            perror("execve");
+                            exit(EXIT_FAILURE);
+                        }
+                    }
+                    else
+                    {
+                        // Parent process
+                        waitpid(pid, &status, 0);
+                    }
+
+                    // Free memory allocated for path
+                }
+            }
+            free(path);
+            free(lineptr);
+        }
+    }
+    else
+    {
+        /*runing in non-interactive mode*/
+        lineptr = malloc(1024);
+        num_chars = my_getline(lineptr);
+        // command excute
+        cmd.line_count += 1;
+        real_arguments = 0;
+
+        char *newline = strchr(lineptr, '\n');
+        if (newline != NULL)
+        {
+            *newline = '\0';
+        }
+        // Parse command into arguments
+        char *token = strtok(lineptr, " ");
+        int num_args = 0;
+
+        while (token != NULL)
+        {
+            // Ignore comments
+            if (token[0] == '#')
+            {
+                token = NULL;
+                break;
+            }
+
+            // Store argument and update counter
+            args[num_args++] = token;
+
+            // Get next token
+            token = strtok(NULL, " ");
+        }
+        args[num_args] = NULL;
+
+        // Execute command
+        if (num_args > 0)
+        {
+            // Get path to executable file
+            path = get_location(args[0]);
+            if (path == NULL)
+            {
+                printf("%s: command not found\n", args[0]);
+            }
+            else
+            {
+                pid = fork();
+
+                if (pid == -1)
+                {
+                    perror("fork");
+                    exit(EXIT_FAILURE);
+                }
+                else if (pid == 0)
+                {
+                    // Child process
+                    int ret = execve(path, args, envp);
+                    if (ret == -1)
+                    {
+                        perror("execve");
+                        exit(EXIT_FAILURE);
+                    }
+                }
+                else
+                {
+                    // Parent process
+                    waitpid(pid, &status, 0);
+                }
+
+            }
+        }
+        // Free memory allocated for path
+        free(path);
+        return (0);
+    }
 }

@@ -8,7 +8,7 @@
 
 void my_print(char *str)
 {
-	int length = my_strlen(str);
+	int length = strlen(str);
 	int i = 0;
 	char c;
 
@@ -19,26 +19,6 @@ void my_print(char *str)
 	}
 }
 
-/**
- * my_atoi - convert string to int
- * @str: string want to convert
- * Return: int after conversion from string
- */
-
-int my_atoi(char *str)
-{
-	int length = my_strlen(str);
-	int mul = 1;
-	int result = 0;
-	int i;
-
-	for (i = length - 1; i >= 0; i--)
-	{
-		result += mul * (str[i] - '0');
-		mul *= 10;
-	}
-	return (result);
-}
 
 /**
  * my_getline - get the command as input from console
@@ -46,7 +26,7 @@ int my_atoi(char *str)
  * Return: the length of input
  */
 
-int my_getline(char **word)
+int my_getline(char *word)
 {
 	char buffer[1024];
 	ssize_t num_bytes;
@@ -61,56 +41,60 @@ int my_getline(char **word)
 	{
 		buffer[num_bytes] = '\0';
 		w = buffer;
-		*word = w;
+		my_strcpy(word,w);
 		return (num_bytes);
 	}
+    free(word);
 	my_print("\n");
 	exit(EXIT_SUCCESS);
 }
 
-/**
- * print_error - function to print not found command error
- * @cmd: object to get error information
- * @error_name: the name of error
- * Return: void
- */
-void print_error(info cmd, char *error_name)
-{
-	my_print(cmd.name);
-	my_print(": ");
-	my_print(int_string(cmd.line_count));
-	my_print(": ");
-	my_print(cmd.command);
-	my_print(": ");
-	my_print(error_name);
-	my_print("\n");
+void sigint_handler() {
+	char *prompt = "$ ";
+    my_print("\n");
+	my_print(prompt);
 }
 
 /**
- * int_string - function to convert int to string
- * @num: int number
- * Return: string of int number
- */
-char *int_string(int num)
+ * get_location - get the location of exe file should excute
+ * @command: the name of command
+ * Return - the location of command
+*/
+
+char *get_location(char *command)
 {
-	int i;
-	int counter = 0;
-	int num_mod = num;
-	char *word;
+	char *path, *path_copy, *path_token, *file_path;
+	struct stat buffer;
 
-	while (num % 10 || num != 0)
+	path = getenv("PATH");
+	if (path)
 	{
-		counter += 1;
-		num /= 10;
+		path_copy = strdup(path);
+		path_token = strtok(path_copy, ":");
+		while (path_token != NULL)
+		{
+			file_path = malloc(1024);
+			strcpy(file_path, path_token);
+			strcat(file_path, "/");
+			strcat(file_path, command);
+			strcat(file_path, "\0");
+			if (stat(file_path, &buffer) == 0)
+			{
+				free(path_copy);
+				return (file_path);
+			}
+			else
+			{
+				free(file_path);
+				path_token = strtok(NULL, ":");
+			}
+		}
+		free(path_copy);
+		if (stat(command, &buffer) == 0)
+		{
+			return (command);
+		}
+		return (NULL);
 	}
-
-	word = malloc(counter + 1);
-
-	for (i = counter - 1; i >= 0; i--)
-	{
-		word[i] = num_mod % 10 + '0';
-		num_mod /= 10;
-	}
-	word[counter] = '\0';
-	return (word);
+	return (NULL);
 }

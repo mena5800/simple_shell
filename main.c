@@ -39,7 +39,7 @@ int main(int ac, char **argv, char **envp)
                 *newline = '\0';
             }
             /* Parse command into arguments */
-            token = strtok(lineptr, " ");
+            token = my_strtok(lineptr, " ");
             num_args = 0;
 
             while (token != NULL)
@@ -55,7 +55,7 @@ int main(int ac, char **argv, char **envp)
                 args[num_args++] = token;
 
                 /* Get next token */
-                token = strtok(NULL, " ");
+                token = my_strtok(NULL, " ");
             }
             args[num_args] = NULL;
 
@@ -114,7 +114,7 @@ int main(int ac, char **argv, char **envp)
             *newline = '\0';
         }
         /* Parse command into arguments */
-        token = strtok(lineptr, " ");
+        token = my_strtok(lineptr, " ");
         num_args = 0;
 
         while (token != NULL)
@@ -130,7 +130,7 @@ int main(int ac, char **argv, char **envp)
             args[num_args++] = token;
 
             /* Get next token */
-            token = strtok(NULL, " ");
+            token = my_strtok(NULL, " ");
         }
         args[num_args] = NULL;
 

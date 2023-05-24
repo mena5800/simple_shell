@@ -70,7 +70,7 @@ char *get_location(char *command)
 	if (path)
 	{
 		path_copy = strdup(path);
-		path_token = strtok(path_copy, ":");
+		path_token = my_strtok(path_copy, ":");
 		while (path_token != NULL)
 		{
 			file_path = malloc(1024);
@@ -86,7 +86,7 @@ char *get_location(char *command)
 			else
 			{
 				free(file_path);
-				path_token = strtok(NULL, ":");
+				path_token = my_strtok(NULL, ":");
 			}
 		}
 		free(path_copy);

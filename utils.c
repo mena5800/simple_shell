@@ -52,18 +52,20 @@ int my_getline(char **word)
 	ssize_t num_bytes;
 	char *w;
 
-	/* Read input from the user */
-	num_bytes = read(STDIN_FILENO, buffer, sizeof(buffer));
-	if (num_bytes == -1)
+	if (signal(SIGINT, sigint_handler) == SIG_ERR)
 	{
-		perror("Failed to read input");
-		return (EXIT_FAILURE);
+		return (1);
+	}
+	/* Read input from the user */
+	if ((num_bytes = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0)
+	{
+		buffer[num_bytes] = '\0';
+		w = buffer;
+		*word = w;
+		return (num_bytes);
 	}
 
-	buffer[num_bytes] = '\0';
-	w = buffer;
-	*word = w;
-	return (num_bytes);
+	exit(EXIT_SUCCESS);
 }
 
 /**

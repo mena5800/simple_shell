@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -27,6 +28,8 @@ typedef struct info
 
 } info;
 
+
+void sigint_handler();
 int interactive_mode(info cmd, char **argv, char **envp);
 char *get_location(char *command);
 int get_env(char **envp);

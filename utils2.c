@@ -166,3 +166,9 @@ int get_num_lines(char *buffer)
 	}
 	return (counter);
 }
+
+void sigint_handler() {
+	char *prompt = "$ ";
+    my_print("\n");
+	my_print(prompt);
+}

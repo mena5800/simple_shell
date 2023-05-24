@@ -135,11 +135,11 @@ int main(int ac, char **argv, char **envp)
             token = my_strtok(NULL, " ");
         }
         args[num_args] = NULL;
+
         if (my_strcmp(argv[0], "env") == 0)
         {
             get_env(cmd.envp);
         }
-
         /* Execute command*/
         if (num_args > 0)
         {

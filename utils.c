@@ -64,7 +64,7 @@ int my_getline(char **word)
 		*word = w;
 		return (num_bytes);
 	}
-
+	my_print("\n");
 	exit(EXIT_SUCCESS);
 }
 

@@ -15,12 +15,6 @@ int interactive_mode(info cmd, char **argv, char **envp)
 
 	nchars_read = my_getline(&lineptr);
 	cmd.line_count += 1;
-	/* check if the getline function failed or reached EOF or user use CTRL + D */
-	if (nchars_read == -1)
-	{
-		my_print("Exiting shell....\n");
-		return (-1);
-	}
 	real_arguments = 0;
 	argv = clean_command(lineptr, nchars_read, &real_arguments);
 	cmd.command = argv[0];

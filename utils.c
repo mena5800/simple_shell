@@ -8,7 +8,7 @@
 
 void my_print(char *str)
 {
-	int length = strlen(str);
+	int length = my_strlen(str);
 	int i = 0;
 	char c;
 

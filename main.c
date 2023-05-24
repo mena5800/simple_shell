@@ -4,19 +4,24 @@ info cmd;
 
 int main(int ac, char **argv, char **envp)
 {
-    int real_arguments;
+
     char *prompt = "$ ";
-    cmd.name = argv[0];
-    cmd.command = argv[1];
-    cmd.line_count = 0;
-    cmd.envp = envp;
     char *args[1024];
     pid_t pid;
     int status;
     char *path;
-
-    ssize_t num_chars;
+    char *newline;
+    int num_args;
+    char *token;
     char *lineptr = NULL;
+
+
+    cmd.name = argv[0];
+    cmd.command = argv[1];
+    cmd.line_count = 0;
+    cmd.envp = envp;
+
+    (void)ac;
     if (isatty(STDIN_FILENO))
     {
         /*runing in interactive mode*/
@@ -24,41 +29,40 @@ int main(int ac, char **argv, char **envp)
         {
             lineptr = malloc(1024);
             my_print(prompt);
-            num_chars = my_getline(lineptr);
-            // command excute
+            my_getline(lineptr);
+            /* command excute */ 
             cmd.line_count += 1;
-            real_arguments = 0;
 
-            char *newline = strchr(lineptr, '\n');
+            newline = strchr(lineptr, '\n');
             if (newline != NULL)
             {
                 *newline = '\0';
             }
-            // Parse command into arguments
-            char *token = strtok(lineptr, " ");
-            int num_args = 0;
+            /* Parse command into arguments */
+            token = strtok(lineptr, " ");
+            num_args = 0;
 
             while (token != NULL)
             {
-                // Ignore comments
+                /* Ignore comments */
                 if (token[0] == '#')
                 {
                     token = NULL;
                     break;
                 }
 
-                // Store argument and update counter
+                /* Store argument and update counter*/
                 args[num_args++] = token;
 
-                // Get next token
+                /* Get next token */
                 token = strtok(NULL, " ");
             }
             args[num_args] = NULL;
 
-            // Execute command
+            /* Execute command*/
             if (num_args > 0)
             {
-                // Get path to executable file
+                /* Get path to executable file*/
                 path = get_location(args[0]);
                 if (path == NULL)
                 {
@@ -75,7 +79,7 @@ int main(int ac, char **argv, char **envp)
                     }
                     else if (pid == 0)
                     {
-                        // Child process
+                        /* Child process*/
                         int ret = execve(path, args, envp);
                         if (ret == -1)
                         {
@@ -85,11 +89,11 @@ int main(int ac, char **argv, char **envp)
                     }
                     else
                     {
-                        // Parent process
+                        /* Parent process */
                         waitpid(pid, &status, 0);
                     }
 
-                    // Free memory allocated for path
+                    /* Free memory allocated for path */
                 }
             }
             free(path);
@@ -100,41 +104,40 @@ int main(int ac, char **argv, char **envp)
     {
         /*runing in non-interactive mode*/
         lineptr = malloc(1024);
-        num_chars = my_getline(lineptr);
-        // command excute
+        my_getline(lineptr);
+        /* command excute*/
         cmd.line_count += 1;
-        real_arguments = 0;
 
-        char *newline = strchr(lineptr, '\n');
+        newline = strchr(lineptr, '\n');
         if (newline != NULL)
         {
             *newline = '\0';
         }
-        // Parse command into arguments
-        char *token = strtok(lineptr, " ");
-        int num_args = 0;
+        /* Parse command into arguments */
+        token = strtok(lineptr, " ");
+        num_args = 0;
 
         while (token != NULL)
         {
-            // Ignore comments
+            /* Ignore comments */
             if (token[0] == '#')
             {
                 token = NULL;
                 break;
             }
 
-            // Store argument and update counter
+            /*Store argument and update counter*/
             args[num_args++] = token;
 
-            // Get next token
+            /* Get next token */
             token = strtok(NULL, " ");
         }
         args[num_args] = NULL;
 
-        // Execute command
+        /* Execute command*/
         if (num_args > 0)
         {
-            // Get path to executable file
+            /* Get path to executable file*/
             path = get_location(args[0]);
             if (path == NULL)
             {
@@ -151,7 +154,7 @@ int main(int ac, char **argv, char **envp)
                 }
                 else if (pid == 0)
                 {
-                    // Child process
+                    /* Child process*/
                     int ret = execve(path, args, envp);
                     if (ret == -1)
                     {
@@ -161,13 +164,13 @@ int main(int ac, char **argv, char **envp)
                 }
                 else
                 {
-                    // Parent process
+                    /* Parent process*/
                     waitpid(pid, &status, 0);
                 }
 
             }
         }
-        // Free memory allocated for path
+        /* Free memory allocated for path*/
         free(path);
         return (0);
     }

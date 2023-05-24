@@ -15,6 +15,7 @@ int main(int ac, char **argv, char **envp)
     char *token;
     char *lineptr = NULL;
 
+
     cmd.name = argv[0];
     cmd.command = argv[1];
     cmd.line_count = 0;
@@ -29,7 +30,7 @@ int main(int ac, char **argv, char **envp)
             lineptr = malloc(1024);
             my_print(prompt);
             my_getline(lineptr);
-            /* command excute */
+            /* command excute */ 
             cmd.line_count += 1;
 
             newline = strchr(lineptr, '\n');
@@ -57,10 +58,7 @@ int main(int ac, char **argv, char **envp)
                 token = my_strtok(NULL, " ");
             }
             args[num_args] = NULL;
-            if (my_strcmp(argv[0], "env") == 0)
-            {
-                get_env(cmd.envp);
-            }
+
             /* Execute command*/
             if (num_args > 0)
             {
@@ -136,10 +134,6 @@ int main(int ac, char **argv, char **envp)
         }
         args[num_args] = NULL;
 
-        if (my_strcmp(argv[0], "env") == 0)
-        {
-            get_env(cmd.envp);
-        }
         /* Execute command*/
         if (num_args > 0)
         {
@@ -173,11 +167,11 @@ int main(int ac, char **argv, char **envp)
                     /* Parent process*/
                     waitpid(pid, &status, 0);
                 }
+
             }
         }
         /* Free memory allocated for path*/
         free(path);
-        free(lineptr);
         return (0);
     }
 }

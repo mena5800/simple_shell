@@ -38,9 +38,6 @@ void sigint_handler();
 char *my_strcpy(char *, char *);
 char *get_location(char *command);
 char *my_strtok(char *s, const char *delim);
-int get_env(char **envp);
-int my_strcmp(char *str1, char *str2);
-int my_strlen(const char *s);
 
 
 

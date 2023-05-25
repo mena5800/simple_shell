@@ -19,8 +19,7 @@
  *
  * @name: name of shell
  * @command: the name of command
- * @line_count: line counter
- * @envp: parameter
+ * @line_cound: line counter
  */
 
 typedef struct info
@@ -35,11 +34,11 @@ typedef struct info
 
 int my_getline(char *word);
 void my_print(char *str);
-void sigint_handler(int signum);
+void sigint_handler();
 char *my_strcpy(char *, char *);
 char *get_location(char *command);
 char *my_strtok(char *s, const char *delim);
-
+int get_env(char **envp);
 
 
 #endif /* MAIN_H */

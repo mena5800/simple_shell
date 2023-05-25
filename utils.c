@@ -49,8 +49,9 @@ int my_getline(char *word)
 	exit(EXIT_SUCCESS);
 }
 
-void sigint_handler() {
+void sigint_handler(int signum) {
 	char *prompt = "$ ";
+	(void)signum;
     my_print("\n");
 	my_print(prompt);
 }

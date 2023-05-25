@@ -2,29 +2,40 @@
 
 info cmd;
 
-void executeCommand(char *args[], char **envp) {
+void executeCommand(char *args[], char **envp)
+{
     pid_t pid;
     int status;
     char *path;
-    
-    if (args[0] != NULL) {
+
+    if (args[0] != NULL)
+    {
         path = get_location(args[0]);
-        if (path == NULL) {
+        if (path == NULL)
+        {
             printf("%s: command not found\n", args[0]);
-        } else {
+        }
+        else
+        {
             pid = fork();
 
-            if (pid == -1) {
+            if (pid == -1)
+            {
                 perror("fork");
                 exit(EXIT_FAILURE);
-            } else if (pid == 0) {
+            }
+            else if (pid == 0)
+            {
                 /* Child process */
                 int ret = execve(path, args, envp);
-                if (ret == -1) {
+                if (ret == -1)
+                {
                     perror("execve");
                     exit(EXIT_FAILURE);
                 }
-            } else {
+            }
+            else
+            {
                 /* Parent process */
                 waitpid(pid, &status, 0);
             }
@@ -35,7 +46,8 @@ void executeCommand(char *args[], char **envp) {
     }
 }
 
-void processInteractiveMode() {
+void processInteractiveMode()
+{
     char *prompt = "$ ";
     char *args[1024];
     char *lineptr = NULL;
@@ -43,22 +55,26 @@ void processInteractiveMode() {
     int num_args;
     char *token;
 
-    while (1) {
+    while (1)
+    {
         lineptr = malloc(1024);
         my_print(prompt);
         my_getline(lineptr);
         cmd.line_count += 1;
 
         newline = strchr(lineptr, '\n');
-        if (newline != NULL) {
+        if (newline != NULL)
+        {
             *newline = '\0';
         }
 
         token = my_strtok(lineptr, " ");
         num_args = 0;
 
-        while (token != NULL) {
-            if (token[0] == '#') {
+        while (token != NULL)
+        {
+            if (token[0] == '#')
+            {
                 token = NULL;
                 break;
             }
@@ -74,7 +90,8 @@ void processInteractiveMode() {
     }
 }
 
-void processNonInteractiveMode() {
+void processNonInteractiveMode()
+{
     char *args[1024];
     char *lineptr = NULL;
     char *newline;
@@ -86,15 +103,18 @@ void processNonInteractiveMode() {
     cmd.line_count += 1;
 
     newline = strchr(lineptr, '\n');
-    if (newline != NULL) {
+    if (newline != NULL)
+    {
         *newline = '\0';
     }
 
     token = my_strtok(lineptr, " ");
     num_args = 0;
 
-    while (token != NULL) {
-        if (token[0] == '#') {
+    while (token != NULL)
+    {
+        if (token[0] == '#')
+        {
             token = NULL;
             break;
         }
@@ -109,15 +129,21 @@ void processNonInteractiveMode() {
     free(lineptr);
 }
 
-int main(int ac, char **argv, char **envp) {
+int main(int argc, char **argv, char **envp)
+{
+    (void)argc; // Indicate that the parameter is unused
+
     cmd.name = argv[0];
     cmd.command = argv[1];
     cmd.line_count = 0;
     cmd.envp = envp;
 
-    if (isatty(STDIN_FILENO)) {
+    if (isatty(STDIN_FILENO))
+    {
         processInteractiveMode();
-    } else {
+    }
+    else
+    {
         processNonInteractiveMode();
     }
 

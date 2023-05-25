@@ -131,7 +131,7 @@ void processNonInteractiveMode()
 
 int main(int argc, char **argv, char **envp)
 {
-    (void)argc; // Indicate that the parameter is unused
+    (void)argc;
 
     cmd.name = argv[0];
     cmd.command = argv[1];

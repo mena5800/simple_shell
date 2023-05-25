@@ -19,7 +19,8 @@
  *
  * @name: name of shell
  * @command: the name of command
- * @line_cound: line counter
+ * @line_count: line counter
+ * @envp: parameter
  */
 
 typedef struct info

@@ -35,7 +35,7 @@ typedef struct info
 
 int my_getline(char *word);
 void my_print(char *str);
-void sigint_handler();
+void sigint_handler(void);
 char *my_strcpy(char *, char *);
 char *get_location(char *command);
 char *my_strtok(char *s, const char *delim);

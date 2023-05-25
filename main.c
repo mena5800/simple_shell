@@ -5,7 +5,6 @@ info cmd;
 int main(int ac, char **argv, char **envp)
 {
 
-    char *prompt = "$ ";
     char *args[1024];
     pid_t pid;
     int status;
@@ -26,10 +25,11 @@ int main(int ac, char **argv, char **envp)
         /*runing in interactive mode*/
         while (1)
         {
+            my_print("$ ");
+            /*runing in non-interactive mode*/
             lineptr = malloc(1024);
-            my_print(prompt);
             my_getline(lineptr);
-            /* command excute */
+            /* command excute*/
             cmd.line_count += 1;
 
             newline = strchr(lineptr, '\n');
@@ -37,6 +37,7 @@ int main(int ac, char **argv, char **envp)
             {
                 *newline = '\0';
             }
+
             /* Parse command into arguments */
             token = my_strtok(lineptr, " ");
             num_args = 0;
@@ -49,23 +50,43 @@ int main(int ac, char **argv, char **envp)
                     token = NULL;
                     break;
                 }
+                if (strlen(token) == 0)
+                {
+                    token = my_strtok(NULL, " ");
+                    continue;
+                }
 
-                /* Store argument and update counter*/
+                /*Store argument and update counter*/
                 args[num_args++] = token;
 
                 /* Get next token */
                 token = my_strtok(NULL, " ");
             }
+
+            if (num_args == 0)
+                free(lineptr);
             args[num_args] = NULL;
+
+            if (strcmp(args[0], "env") == 0 && num_args == 1)
+            {
+                get_env(envp);
+                free(lineptr);
+                continue;
+            }
+            else if (strcmp(args[0], "exit") == 0)
+            {
+                free(lineptr);
+                exit(0);
+            }
 
             /* Execute command*/
             if (num_args > 0)
             {
-                /* Get path to executable file*/
                 path = get_location(args[0]);
+                /* Get path to executable file*/
                 if (path == NULL)
                 {
-                    printf("%s: command not found\n", args[0]);
+                    my_print("command not found\n");
                 }
                 else
                 {
@@ -82,21 +103,24 @@ int main(int ac, char **argv, char **envp)
                         int ret = execve(path, args, envp);
                         if (ret == -1)
                         {
-                            perror("execve");
-                            exit(EXIT_FAILURE);
                         }
                     }
                     else
                     {
-                        /* Parent process */
+                        /* Parent process*/
                         waitpid(pid, &status, 0);
+                        if (strcmp(path, lineptr) == 0)
+                        {
+                            free(path);
+                        }
+                        else
+                        {
+                            free(path);
+                            free(lineptr);
+                        }
                     }
-
-                    /* Free memory allocated for path */
                 }
             }
-            free(path);
-            free(lineptr);
         }
     }
     else

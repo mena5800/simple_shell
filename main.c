@@ -39,7 +39,6 @@ int main(int argc, char *argv[], char **envp)
 
 		option(i, args, envp, command, &command_len, cmd, &exit_code, &status);
 	}
-
 	free(command);
-	return (WEXITSTATUS(status));
+	return (status);
 }

@@ -154,7 +154,7 @@ void option(int i, char **args, char **envp, char *command,
 
 	if (i == 0)
 	{
-		*status = 2;
+		*status = 0;
 	}
 	else if (strcmp(args[0], "env") == 0 && i == 1)
 	{

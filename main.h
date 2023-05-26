@@ -45,7 +45,7 @@ void free_args(size_t *command_len, char *command, char **args);
 void handle_exit(int i, char *command, info cmd,
 				 size_t *command_len, int exit_code, char **args);
 void option(int i, char **args, char **envp, char *command,
-			size_t *command_len, info cmd, int exit_code, int *status);
+			size_t *command_len, info cmd, int *exit_code, int *status);
 int tokenize(char *command, char **args);
 
 #endif /* MAIN_H */

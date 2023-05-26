@@ -37,7 +37,7 @@ int main(int argc, char *argv[], char **envp)
 
 		cmd.line_count += 1;
 
-		option(i, args, envp, command, &command_len, cmd, exit_code, &status);
+		option(i, args, envp, command, &command_len, cmd, &exit_code, &status);
 	}
 
 	free(command);

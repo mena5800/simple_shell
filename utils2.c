@@ -106,7 +106,7 @@ void handle_exit(int i, char *command, info cmd,
 		free(command);
 		free(cmd.command);
 		free_args(command_len, command, args);
-		exit(2);
+		exit(exit_code);
 	}
 	else
 	{
@@ -124,13 +124,6 @@ void handle_exit(int i, char *command, info cmd,
 					cmd.name, cmd.line_count, args[1]);
 			free(command);
 			free_args(command_len, command, args);
-		}
-		else if (exit_code > 232)
-		{
-			free(command);
-			free(cmd.command);
-			free_args(command_len, command, args);
-			exit(232);
 		}
 		else
 		{
@@ -155,7 +148,7 @@ void handle_exit(int i, char *command, info cmd,
  * Return: void
  */
 void option(int i, char **args, char **envp, char *command,
-			size_t *command_len, info cmd, int exit_code, int *status)
+			size_t *command_len, info cmd, int *exit_code, int *status)
 {
 	char *path;
 
@@ -172,7 +165,7 @@ void option(int i, char **args, char **envp, char *command,
 	else if (strcmp(args[0], "exit") == 0)
 	{
 
-		handle_exit(i, command, cmd, command_len, exit_code, args);
+		handle_exit(i, command, cmd, command_len, *exit_code, args);
 	}
 	else if (i > 0)
 	{
@@ -180,6 +173,7 @@ void option(int i, char **args, char **envp, char *command,
 		/* Get path to executable file*/
 		if (path == NULL)
 		{
+			*exit_code = 2;
 			print_error(status, cmd);
 			free_args(command_len, command, args);
 		}

@@ -41,5 +41,5 @@ int main(int argc, char *argv[], char **envp)
 	}
 
 	free(command);
-	return (status);
+	return (WEXITSTATUS(status));
 }

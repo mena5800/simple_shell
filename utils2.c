@@ -36,7 +36,7 @@ int execmd(char *path, char *command, char **args, char **envp)
 		}
 		clear_execmd(path, command, args);
 	}
-	return (WEXITSTATUS(status));
+	return (status);
 }
 
 /**
@@ -106,7 +106,7 @@ void handle_exit(int i, char *command, info cmd,
 		free(command);
 		free(cmd.command);
 		free_args(command_len, command, args);
-		exit(exit_code);
+		exit(2);
 	}
 	else
 	{
@@ -124,6 +124,13 @@ void handle_exit(int i, char *command, info cmd,
 					cmd.name, cmd.line_count, args[1]);
 			free(command);
 			free_args(command_len, command, args);
+		}
+		else if (exit_code > 232)
+		{
+			free(command);
+			free(cmd.command);
+			free_args(command_len, command, args);
+			exit(232);
 		}
 		else
 		{
@@ -154,6 +161,7 @@ void option(int i, char **args, char **envp, char *command,
 
 	if (i == 0)
 	{
+		*status = 2;
 	}
 	else if (strcmp(args[0], "env") == 0 && i == 1)
 	{

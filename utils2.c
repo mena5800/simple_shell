@@ -158,6 +158,7 @@ void option(int i, char **args, char **envp, char *command,
 	}
 	else if (strcmp(args[0], "env") == 0 && i == 1)
 	{
+		*status = 0;
 		get_env(envp);
 		free(command);
 		free_args(command_len, command, args);

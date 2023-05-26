@@ -19,47 +19,23 @@ void my_print(char *str)
 	}
 }
 
-
 /**
- * my_getline - get the command as input from console
- * @word: where the command save
- * Return: the length of input
+ * sigint_handler - function call when interept
+ * Return: void
  */
-
-int my_getline(char *word)
+void sigint_handler(void)
 {
-	char buffer[1024];
-	ssize_t num_bytes;
-	char *w;
-
-	if (signal(SIGINT, sigint_handler) == SIG_ERR)
-	{
-		return (1);
-	}
-	/* Read input from the user */
-	if ((num_bytes = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0)
-	{
-		buffer[num_bytes] = '\0';
-		w = buffer;
-		my_strcpy(word,w);
-		return (num_bytes);
-	}
-    free(word);
-	my_print("\n");
-	exit(EXIT_SUCCESS);
-}
-
-void sigint_handler() {
 	char *prompt = "$ ";
-    my_print("\n");
+
+	my_print("\n");
 	my_print(prompt);
 }
 
 /**
  * get_location - get the location of exe file should excute
  * @command: the name of command
- * Return - the location of command
-*/
+ * Return: the location of command
+ */
 
 char *get_location(char *command)
 {
@@ -99,4 +75,79 @@ char *get_location(char *command)
 	}
 	free(command);
 	return (NULL);
+}
+
+/**
+ * my_strtok- seprate the string to array of strings
+ * @delim: the seprator
+ * @s: string
+ * Return: string
+ */
+char *my_strtok(char *s, const char *delim)
+{
+	static char *p;
+	char *start;
+
+	if (s != NULL)
+		p = s;
+	if (p == NULL)
+		return (NULL);
+	start = p;
+	while (*p != '\0')
+	{
+		const char *d = delim;
+
+		while (*d != '\0')
+		{
+			if (*p == *d)
+			{
+				*p = '\0';
+				p++;
+				if (start != p)
+				{
+					return (start);
+				}
+				else
+				{
+					start = p;
+					break;
+				}
+			}
+			d++;
+		}
+		p++;
+	}
+	if (start == p)
+		return (NULL);
+	else
+		return (start);
+}
+
+/**
+ * int_string - function to convert int to string
+ * @num: int number
+ * Return: string of int number
+ */
+char *int_string(int num)
+{
+	int i;
+	int counter = 0;
+	int num_mod = num;
+	char *word;
+
+	while (num % 10 || num != 0)
+	{
+		counter += 1;
+		num /= 10;
+	}
+
+	word = malloc(counter + 1);
+
+	for (i = counter - 1; i >= 0; i--)
+	{
+		word[i] = num_mod % 10 + '0';
+		num_mod /= 10;
+	}
+	word[counter] = '\0';
+	return (word);
 }
